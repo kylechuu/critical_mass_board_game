@@ -1,3 +1,15 @@
+// #include <iostream>
+// #include <vector>
+// #include <queue>
+// #include <cstring>
+
+// using namespace std;
+// enum Color{
+//     White, // Initital 0
+//     Blue, // Player One
+//     Red, // Player Two
+//     Black //Explosion
+// };
 class Student{
     public:
         void makeMove(int Record[5][6], int Max[5][6], Color color[5][6], Color inputColor){
@@ -6,10 +18,10 @@ class Student{
                 for(int j=0;j<6;j++){
                     virtual_board[i][j]=Record[i][j];
                     virtual_Max[i][j]=Max[i][j];
-                    vitual_color[i][j]=color[i][j];
+                    virtual_color[i][j]=color[i][j];
                 }
             //使用minimax更改private的x,y值 
-            int a=minimax(Record, color, 4, inputColor);    
+            int a=minimax(Record, color, 2, inputColor);    
         }
         int evaluate(int virtual_board[5][6], Color color[5][6]){//角落分數最高,再來邊上,再來中央,分數為該格子顏色乘以該格子的權重再乘以該格子的棋子數目,顏色定義為藍色1,紅色-1 藍色希望越高越好,紅色希望越低越好
             int corner_weight=4 ,edge_weight=2, center_weight=1, total_weight=0;
@@ -42,7 +54,7 @@ class Student{
             int illegal_value= -10001*player_color(inputColor);//當棋子下在virtual_board上,遇到已經爆炸(黑色),或敵對顏色時,return一個很差的值,使得minimax選值的時候不會選到他們,對Blue來說會是-10001,對Red來說是10001
             int killing_value=10000*player_color(inputColor);//每當有一步能直接清空對面所有棋子時,給出一個最好的值,對Blue來說是10000,對Red來說是-10000
             if(depth==0 || game_is_over(board, board_color, inputColor)){  //終止條件,如果檯面遊戲已經結束,return最好的值,或因為minimax深度到0了直接對檯面評分
-                if(game_is_over(board, inputColor)) return killing_value; 
+                if(game_is_over(board, board_color, inputColor)) return killing_value; 
                 else return evaluate(virtual_board, virtual_color);
             }
             //對virtual_board上每個點下一次,先判斷我們是藍色還是紅色,在判斷這步是不是合法的,若否則得到很差的值,若是則從此節點繼續minimax直到深度為零或遊戲結束,藍色方則會從所有可能中挑分數最高的走,紅色方會挑所有可能中分數最低的走
@@ -96,7 +108,7 @@ class Student{
             }
             return false;
         }
-        void reset_board(int board[5][6], int board_color[5][6]){//minimax會將所有情況下過一遍,故每下了一種情況要將virtual_board回復到真正的Record的情況才能繼續往下minimax
+        void reset_board(int board[5][6], Color board_color[5][6]){ //minimax會將所有情況下過一遍,故每下了一種情況要將virtual_board回復到真正的Record的情況才能繼續往下minimax
             for(int i=0; i<5; i++)
                 for(int j=0; j<6; j++){
                     virtual_board[i][j]=board[i][j];
@@ -133,3 +145,68 @@ class Student{
         int virtual_Max[5][6];
         Color virtual_color[5][6];  
     };
+// int main(){
+//     int game_board[5][6];
+//     int game_board_max[5][6];
+//     Color game_board_color[5][6];
+//     Color play_one=Blue;
+//     Color play_two=Red;
+//     for(int i=0;i<5;i++){
+//         for(int j=0;j<6;j++){
+//             game_board[i][j]=0;
+//             game_board_max[i][j]=3;
+//             game_board_color[i][j]=White;
+//         }
+//     }
+//     game_board_max[0][0]=game_board_max[0][5]=game_board_max[4][0]=game_board_max[4][5]=2;
+//     for(int i=1;i<4;i++){
+//         for(int j=1;j<5;j++){
+//             game_board_max[i][j]=4;
+//         }
+//     }
+//     Student kyle;
+//     Student eric;
+//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+//     int x=kyle.getX();
+//     int y=kyle.getY();
+//     cout<<x<<" "<<y<<" "<<"\n";
+//     game_board[x][y]++;
+//     game_board_color[x][y]=play_one;
+//     kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
+//     x=kyle.getX();
+//     y=kyle.getY();
+//     cout<<x<<" "<<y<<" "<<"\n";
+//     game_board[x][y]++;
+//     game_board_color[x][y]=play_two;
+//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+//     x=kyle.getX();
+//     y=kyle.getY();
+//     cout<<x<<" "<<y<<" "<<"\n";
+//     game_board[x][y]++;
+//     game_board_color[x][y]=play_one;
+//     kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
+//     x=kyle.getX();
+//     y=kyle.getY();
+//     cout<<x<<" "<<y<<" "<<"\n";
+//     game_board[x][y]++;
+//     game_board_color[x][y]=play_two;
+//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+//     x=kyle.getX();
+//     y=kyle.getY();
+//     cout<<x<<" "<<y<<" "<<"\n";
+//     game_board[x][y]++;
+//     game_board_color[x][y]=play_one;
+//     kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
+//     x=kyle.getX();
+//     y=kyle.getY();
+//     cout<<x<<" "<<y<<" "<<"\n";
+//     game_board[x][y]++;
+//     game_board_color[x][y]=play_two;
+//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+//     x=kyle.getX();
+//     y=kyle.getY();
+//     cout<<x<<" "<<y<<" "<<"\n";
+//     game_board[x][y]++;
+//     game_board_color[x][y]=play_one;
+//     return 0;    
+// }
