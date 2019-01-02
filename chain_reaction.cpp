@@ -1,15 +1,15 @@
-// #include <iostream>
-// #include <vector>
-// #include <queue>
-// #include <cstring>
+#include <iostream>
+#include <vector>
+#include <queue>
+#include <cstring>
 
-// using namespace std;
-// enum Color{
-//     White, // Initital 0
-//     Blue, // Player One
-//     Red, // Player Two
-//     Black //Explosion
-// };
+using namespace std;
+enum Color{
+    White, // Initital 0
+    Blue, // Player One
+    Red, // Player Two
+    Black //Explosion
+};
 class Student{
     public:
         void makeMove(int Record[5][6], int Max[5][6], Color color[5][6], Color inputColor){
@@ -22,6 +22,29 @@ class Student{
                 }
             //使用minimax更改private的x,y值 
             int a=minimax(Record, color, 2, inputColor);    
+            // int best_value=-10000*player_color(inputColor);
+            // int a;
+            // for(int i=0;i<5;i++)
+            //     for(int j=0;j<6;j++){
+            //         if(is_valid_move(i, j, inputColor)){
+            //             if(inputColor==Blue){
+            //                 move(i, j, inputColor);
+            //                 a=minimax(Record, color, 2, opponent_color(inputColor));
+            //                 reset_board(Record, color);
+            //                 best_value=max(a , best_value);
+            //             }
+            //             else{
+            //                 move(i, j, inputColor);
+            //                 a=minimax(Record, color, 2, opponent_color(inputColor));
+            //                 reset_board(Record, color);
+            //                 best_value=min(a , best_value);
+            //             }
+            //             if(best_value==a) {x=i; y=j;}
+            //         }   
+            //     }
+
+
+
         }
         int evaluate(int virtual_board[5][6], Color color[5][6]){//角落分數最高,再來邊上,再來中央,分數為該格子顏色乘以該格子的權重再乘以該格子的棋子數目,顏色定義為藍色1,紅色-1 藍色希望越高越好,紅色希望越低越好
             int corner_weight=4 ,edge_weight=2, center_weight=1, total_weight=0;
@@ -80,7 +103,7 @@ class Student{
                             value=illegal_value;
                         best_value=min(best_value,value);                               
                     }
-                    if(value==best_value){ x=i; y=j; } 
+                    if(value==best_value && depth==2){ x=i; y=j; } 
                 }
             return best_value;
         }
@@ -145,68 +168,68 @@ class Student{
         int virtual_Max[5][6];
         Color virtual_color[5][6];  
     };
-// int main(){
-//     int game_board[5][6];
-//     int game_board_max[5][6];
-//     Color game_board_color[5][6];
-//     Color play_one=Blue;
-//     Color play_two=Red;
-//     for(int i=0;i<5;i++){
-//         for(int j=0;j<6;j++){
-//             game_board[i][j]=0;
-//             game_board_max[i][j]=3;
-//             game_board_color[i][j]=White;
-//         }
-//     }
-//     game_board_max[0][0]=game_board_max[0][5]=game_board_max[4][0]=game_board_max[4][5]=2;
-//     for(int i=1;i<4;i++){
-//         for(int j=1;j<5;j++){
-//             game_board_max[i][j]=4;
-//         }
-//     }
-//     Student kyle;
-//     Student eric;
-//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
-//     int x=kyle.getX();
-//     int y=kyle.getY();
-//     cout<<x<<" "<<y<<" "<<"\n";
-//     game_board[x][y]++;
-//     game_board_color[x][y]=play_one;
-//     kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
-//     x=kyle.getX();
-//     y=kyle.getY();
-//     cout<<x<<" "<<y<<" "<<"\n";
-//     game_board[x][y]++;
-//     game_board_color[x][y]=play_two;
-//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
-//     x=kyle.getX();
-//     y=kyle.getY();
-//     cout<<x<<" "<<y<<" "<<"\n";
-//     game_board[x][y]++;
-//     game_board_color[x][y]=play_one;
-//     kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
-//     x=kyle.getX();
-//     y=kyle.getY();
-//     cout<<x<<" "<<y<<" "<<"\n";
-//     game_board[x][y]++;
-//     game_board_color[x][y]=play_two;
-//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
-//     x=kyle.getX();
-//     y=kyle.getY();
-//     cout<<x<<" "<<y<<" "<<"\n";
-//     game_board[x][y]++;
-//     game_board_color[x][y]=play_one;
-//     kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
-//     x=kyle.getX();
-//     y=kyle.getY();
-//     cout<<x<<" "<<y<<" "<<"\n";
-//     game_board[x][y]++;
-//     game_board_color[x][y]=play_two;
-//     kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
-//     x=kyle.getX();
-//     y=kyle.getY();
-//     cout<<x<<" "<<y<<" "<<"\n";
-//     game_board[x][y]++;
-//     game_board_color[x][y]=play_one;
-//     return 0;    
-// }
+int main(){
+    int game_board[5][6];
+    int game_board_max[5][6];
+    Color game_board_color[5][6];
+    Color play_one=Blue;
+    Color play_two=Red;
+    for(int i=0;i<5;i++){
+        for(int j=0;j<6;j++){
+            game_board[i][j]=0;
+            game_board_max[i][j]=3;
+            game_board_color[i][j]=White;
+        }
+    }
+    game_board_max[0][0]=game_board_max[0][5]=game_board_max[4][0]=game_board_max[4][5]=2;
+    for(int i=1;i<4;i++){
+        for(int j=1;j<5;j++){
+            game_board_max[i][j]=4;
+        }
+    }
+    Student kyle;
+    Student eric;
+    kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+    int x=kyle.getX();
+    int y=kyle.getY();
+    cout<<x<<" "<<y<<" "<<"\n";
+    game_board[x][y]++;
+    game_board_color[x][y]=play_one;
+    kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
+    x=kyle.getX();
+    y=kyle.getY();
+    cout<<x<<" "<<y<<" "<<"\n";
+    game_board[x][y]++;
+    game_board_color[x][y]=play_two;
+    kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+    x=kyle.getX();
+    y=kyle.getY();
+    cout<<x<<" "<<y<<" "<<"\n";
+    game_board[x][y]++;
+    game_board_color[x][y]=play_one;
+    kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
+    x=kyle.getX();
+    y=kyle.getY();
+    cout<<x<<" "<<y<<" "<<"\n";
+    game_board[x][y]++;
+    game_board_color[x][y]=play_two;
+    kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+    x=kyle.getX();
+    y=kyle.getY();
+    cout<<x<<" "<<y<<" "<<"\n";
+    game_board[x][y]++;
+    game_board_color[x][y]=play_one;
+    kyle.makeMove(game_board, game_board_max, game_board_color, play_two);
+    x=kyle.getX();
+    y=kyle.getY();
+    cout<<x<<" "<<y<<" "<<"\n";
+    game_board[x][y]++;
+    game_board_color[x][y]=play_two;
+    kyle.makeMove(game_board, game_board_max, game_board_color, play_one);
+    x=kyle.getX();
+    y=kyle.getY();
+    cout<<x<<" "<<y<<" "<<"\n";
+    game_board[x][y]++;
+    game_board_color[x][y]=play_one;
+    return 0;    
+}
